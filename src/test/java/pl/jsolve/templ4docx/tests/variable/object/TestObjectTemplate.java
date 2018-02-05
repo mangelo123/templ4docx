@@ -14,6 +14,7 @@ import pl.jsolve.templ4docx.tests.variable.object.model.Obj01;
 import pl.jsolve.templ4docx.tests.variable.object.model.Obj02;
 import pl.jsolve.templ4docx.tests.variable.object.model.Obj03;
 import pl.jsolve.templ4docx.variable.ObjectVariable;
+import pl.jsolve.templ4docx.variable.TextVariable;
 import pl.jsolve.templ4docx.variable.Variables;
 
 /**
@@ -36,6 +37,9 @@ public class TestObjectTemplate extends AbstractVariableObjectTest {
         var.addObjectVariable(new ObjectVariable("${var02}", new Obj02(), docx.getVariablePattern()));
         var.addObjectVariable(new ObjectVariable("${var03}", new Obj03(), docx.getVariablePattern()));
 
+        var.addTextVariable(new TextVariable("${header}", "Injected header text"));
+        var.addTextVariable(new TextVariable("${footer}", "Injected footer text"));
+        
         docx.fillTemplate(var);
 
         String tmpPath = System.getProperty("java.io.tmpdir");
@@ -45,8 +49,15 @@ public class TestObjectTemplate extends AbstractVariableObjectTest {
         docx.save(processedPath);
 
         String text = docx.readTextContent();
+        String expected =        		
+        		"Header text here - Injected header text\n"
+        		+ "This is test simple template with three variables: value01, value02, value03."
+        		+ " This is nested values of variables: field1Value, field2Value, field3Value. "
+        		+ "And more: field11Value.\nFooter text - "
+        		+ "Injected footer text";
+       
         assertEquals(
-                "This is test simple template with three variables: value01, value02, value03. This is nested values of variables: field1Value, field2Value, field3Value. And more: field11Value.",
+                expected,
                 text.trim());
     }
 

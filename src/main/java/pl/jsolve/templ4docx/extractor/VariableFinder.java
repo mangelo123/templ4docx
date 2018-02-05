@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFooter;
+import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -58,6 +60,22 @@ public class VariableFinder {
             inserts.addAll(find(paragraph, document, null, keys));
         }
 
+        // Resolves variables contained within headers and footers.
+        //
+        // mangelo - 2018-02-05
+        //
+        for (XWPFHeader header : document.getHeaderList()) {
+        	for (XWPFParagraph paragraph : header.getListParagraph()) {
+        		inserts.addAll(find(paragraph, document, null, keys));
+        	}
+        }        
+        
+        for (XWPFFooter footer : document.getFooterList()) {
+        	for (XWPFParagraph paragraph : footer.getListParagraph()) {
+        		inserts.addAll(find(paragraph, document, null, keys));
+        	}
+        }        
+        
         findInTables(inserts, document.getTables(), keys);
 
         mergeTableInserts(inserts, variables);
