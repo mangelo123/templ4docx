@@ -5,6 +5,7 @@ import java.util.List;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.extractor.VariableFinder;
 import pl.jsolve.templ4docx.insert.Insert;
+import pl.jsolve.templ4docx.utils.XWPFUtils;
 import pl.jsolve.templ4docx.variable.Variables;
 
 /**
@@ -27,6 +28,9 @@ public class DocumentExecutor {
      * @param docx Docx object with opened .docx file
      */
     public void execute(Docx docx) {
+    	
+    	XWPFUtils.fixDocumentRuns(docx);
+    	
         List<Insert> inserts = variableFinder.find(docx.getXWPFDocument(), variables);
         variableFinder.replace(inserts);
     }

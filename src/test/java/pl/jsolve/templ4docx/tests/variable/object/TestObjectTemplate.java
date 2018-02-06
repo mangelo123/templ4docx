@@ -30,15 +30,15 @@ public class TestObjectTemplate extends AbstractVariableObjectTest {
 
         Docx docx = new Docx(is);
         is.close();
-        docx.setVariablePattern(new VariablePattern("${", "}"));
+        docx.setVariablePattern(new VariablePattern("#{", "}"));
 
         Variables var = new Variables();
-        var.addObjectVariable(new ObjectVariable("${var01}", new Obj01(), docx.getVariablePattern()));
-        var.addObjectVariable(new ObjectVariable("${var02}", new Obj02(), docx.getVariablePattern()));
-        var.addObjectVariable(new ObjectVariable("${var03}", new Obj03(), docx.getVariablePattern()));
+        var.addObjectVariable(new ObjectVariable("#{var01}", new Obj01(), docx.getVariablePattern()));
+        var.addObjectVariable(new ObjectVariable("#{var02}", new Obj02(), docx.getVariablePattern()));
+        var.addObjectVariable(new ObjectVariable("#{var03}", new Obj03(), docx.getVariablePattern()));
 
-        var.addTextVariable(new TextVariable("${header}", "Injected header text"));
-        var.addTextVariable(new TextVariable("${footer}", "Injected footer text"));
+        var.addTextVariable(new TextVariable("#{header}", "Injected header text"));
+        var.addTextVariable(new TextVariable("#{footer}", "Injected footer text"));
         
         docx.fillTemplate(var);
 
@@ -50,7 +50,7 @@ public class TestObjectTemplate extends AbstractVariableObjectTest {
 
         String text = docx.readTextContent();
         String expected =        		
-        		"Header text here - Injected header text\n"
+        		"Header text here - Injected header text – what happens to this text.\n"
         		+ "This is test simple template with three variables: value01, value02, value03."
         		+ " This is nested values of variables: field1Value, field2Value, field3Value. "
         		+ "And more: field11Value.\nFooter text - "
